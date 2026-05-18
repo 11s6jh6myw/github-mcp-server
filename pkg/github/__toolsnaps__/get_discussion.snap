@@ -3,19 +3,19 @@
     "readOnlyHint": true,
     "title": "Get discussion"
   },
-  "description": "Get a specific discussion by owner, repository, and discussion number.\nReturns discussion metadata such as title, body, URL, status, category, and timestamps.\nDoes not return comments, replies, or comment counts. Do not use this for requests to read, list, summarize, count, or inspect discussion comments; use get_discussion_comments instead.",
+  "description": "Get discussion metadata by owner, repo, and discussion number. Does not return comments, replies, or comment counts; use get_discussion_comments for comment read/list/summarize/count requests.",
   "inputSchema": {
     "properties": {
       "discussionNumber": {
-        "description": "Discussion number from the URL path after /discussions/. This is not a node ID.",
+        "description": "Discussion number. This is not a node ID.",
         "type": "number"
       },
       "owner": {
-        "description": "Repository owner or organization login. For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use ORG.",
+        "description": "Repository owner or organization login.",
         "type": "string"
       },
       "repo": {
-        "description": "Repository name. For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use .github.",
+        "description": "Repository name. Use .github for organization-level discussions.",
         "type": "string"
       }
     },

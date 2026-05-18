@@ -3,7 +3,7 @@
     "readOnlyHint": true,
     "title": "Get discussion comments"
   },
-  "description": "Get/list comments for a specific discussion by owner, repository, and discussion number.\nUse this when the user asks to read, list, summarize, count, inspect, filter, or find what someone said in discussion comments.\nReturns top-level comments, pagination information, and totalCount. Can include replies only when includeReplies is explicitly requested.\nDo not call get_discussion first for comment-related requests; this tool is sufficient.",
+  "description": "Get/list discussion comments by owner, repo, and discussion number. Use for comment read/list/summarize/count/filter requests or what someone said. Includes totalCount and top-level comments; set includeReplies only when replies are requested. Do not call get_discussion first.",
   "inputSchema": {
     "properties": {
       "after": {
@@ -11,15 +11,15 @@
         "type": "string"
       },
       "discussionNumber": {
-        "description": "Discussion number from the URL path after /discussions/. This is not a node ID.",
+        "description": "Discussion number. This is not a node ID.",
         "type": "number"
       },
       "includeReplies": {
-        "description": "Optional. Set true only when the user explicitly asks to include replies. Set false when the user explicitly asks to exclude replies. Omit when replies are not mentioned.",
+        "description": "Optional. Set only when the user explicitly asks to include or exclude replies; omit when replies are not mentioned.",
         "type": "boolean"
       },
       "owner": {
-        "description": "Repository owner or organization login. For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use ORG.",
+        "description": "Repository owner or organization login.",
         "type": "string"
       },
       "perPage": {
@@ -29,7 +29,7 @@
         "type": "number"
       },
       "repo": {
-        "description": "Repository name. For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use .github.",
+        "description": "Repository name. Use .github for organization-level discussions.",
         "type": "string"
       }
     },

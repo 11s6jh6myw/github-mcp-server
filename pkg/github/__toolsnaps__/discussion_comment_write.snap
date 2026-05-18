@@ -3,7 +3,7 @@
     "destructiveHint": true,
     "title": "Manage discussion comments"
   },
-  "description": "Write-only operations for discussion comments.\nUse only when the user explicitly asks to add a comment, reply, update, delete, mark as answer, or unmark as answer.\nDo not use this to read, list, get, summarize, count, search, or inspect discussion comments; use get_discussion_comments for read-only comment requests.",
+  "description": "Write-only discussion comment operations: add, reply, update, delete, mark/unmark answer. Use only for explicit write requests; for read/list/summarize/count/search/inspect comments, use get_discussion_comments.",
   "inputSchema": {
     "properties": {
       "body": {
@@ -15,7 +15,7 @@
         "type": "string"
       },
       "discussionNumber": {
-        "description": "Discussion number from the URL path after /discussions/ (required for 'add' and 'reply' methods). This is not a node ID.",
+        "description": "Discussion number (required for 'add' and 'reply' methods). This is not a node ID.",
         "type": "number"
       },
       "method": {
@@ -31,11 +31,11 @@
         "type": "string"
       },
       "owner": {
-        "description": "Repository owner or organization login (required for 'add' and 'reply' methods). For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use ORG.",
+        "description": "Repository owner or organization login (required for 'add' and 'reply' methods).",
         "type": "string"
       },
       "repo": {
-        "description": "Repository name (required for 'add' and 'reply' methods). For org-level discussion URLs like https://github.com/orgs/ORG/discussions/NUMBER, use .github.",
+        "description": "Repository name (required for 'add' and 'reply' methods). Use .github for organization-level discussions.",
         "type": "string"
       }
     },
