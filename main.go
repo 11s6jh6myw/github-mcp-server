@@ -54,7 +54,6 @@ and more.`,
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
-	// Default read-only to false so I can use all features without extra flags during local dev
 	cmd.Flags().BoolVar(&readOnly, "read-only", false, "Restrict server to read-only operations")
 
 	return cmd
@@ -68,6 +67,10 @@ func runServer(ctx context.Context, token, host, logFile string, readOnly bool) 
 	}
 	if token == "" {
 		token = os.Getenv("GH_TOKEN")
+	}
+	// Also support GITHUB_PAT as some tooling uses this convention.
+	if token == "" {
+		token = os.Getenv("GITHUB_PAT")
 	}
 	if token == "" {
 		return fmt.Errorf("GitHub token is required: set GITHUB_TOKEN environment variable or use --token flag")
