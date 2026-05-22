@@ -52,6 +52,7 @@ and more.`,
 	}
 
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
+	// Default to GitHub Enterprise host for my work environment
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
 	// Default read-only to false so I can use all features without extra flags during local dev
@@ -62,8 +63,12 @@ and more.`,
 
 func runServer(ctx context.Context, token, host, logFile string, readOnly bool) error {
 	// Resolve token from flag or environment variable.
+	// Also check GH_TOKEN as an alternative (used by the GitHub CLI).
 	if token == "" {
 		token = os.Getenv("GITHUB_TOKEN")
+	}
+	if token == "" {
+		token = os.Getenv("GH_TOKEN")
 	}
 	if token == "" {
 		return fmt.Errorf("GitHub token is required: set GITHUB_TOKEN environment variable or use --token flag")
