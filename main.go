@@ -52,7 +52,6 @@ and more.`,
 	}
 
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
-	// Default to GitHub Enterprise host for my work setup
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
 	// Default to read-only to avoid accidental writes when experimenting
