@@ -95,11 +95,7 @@ func runServer(ctx context.Context, token, host, logFile string, readOnly bool) 
 	}
 
 	fmt.Fprintf(os.Stderr, "Starting GitHub MCP Server (version %s, read-only: %v)\n", Version, readOnly)
-	fmt.Fprintf(os.Stderr, "Connecting to host: %s\n", host)
+	fmt.Fprintf(os.Stderr, "Connecting to GitHub API at %s\n", host)
 
-	if err := s.Serve(ctx); err != nil {
-		return fmt.Errorf("server error: %w", err)
-	}
-
-	return nil
+	return s.Serve(ctx)
 }
