@@ -95,12 +95,18 @@ func runServer(ctx context.Context, token, host, logFile string, readOnly bool) 
 	}
 
 	fmt.Fprintf(os.Stderr, "Starting GitHub MCP Server (version %s, read-only: %v)\n", Version, readOnly)
+
 	// Log which token source was used to help with debugging auth issues.
-	if os.Getenv("GITHUB_TOKEN") != "" {
+	switch {
+	case os.Getenv("GITHUB_TOKEN") != "":
 		fmt.Fprintf(os.Stderr, "Using token from GITHUB_TOKEN\n")
-	} else if os.Getenv("GH_TOKEN") != "" {
+	case os.Getenv("GH_TOKEN") != "":
 		fmt.Fprintf(os.Stderr, "Using token from GH_TOKEN\n")
-	} else if os.Getenv("GITHUB_PAT") != "" {
+	case os.Getenv("GITHUB_PAT") != "":
 		fmt.Fprintf(os.Stderr, "Using token from GITHUB_PAT\n")
+	default:
+		fmt.Fprintf(os.Stderr, "Using token from --token flag\n")
 	}
-	fmt.Fprintf(os.Stderr, "Connecti
+
+	return s.Run(ctx)
+}
