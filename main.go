@@ -54,8 +54,8 @@ and more.`,
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
-	// Default to read-only to avoid accidental writes when experimenting
-	cmd.Flags().BoolVar(&readOnly, "read-only", true, "Restrict server to read-only operations")
+	// Defaulting to false so I don't have to pass --read-only=false every time during local dev.
+	cmd.Flags().BoolVar(&readOnly, "read-only", false, "Restrict server to read-only operations")
 
 	return cmd
 }
