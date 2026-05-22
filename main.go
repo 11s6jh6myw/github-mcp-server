@@ -52,7 +52,6 @@ and more.`,
 	}
 
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
-	// Default to GitHub Enterprise host for my work environment
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
 	// Default read-only to false so I can use all features without extra flags during local dev
@@ -90,7 +89,7 @@ func runServer(ctx context.Context, token, host, logFile string, readOnly bool) 
 		return fmt.Errorf("failed to create server: %w", err)
 	}
 
-	fmt.Fprintf(os.Stderr, "Starting GitHub MCP Server (version %s)\n", Version)
+	fmt.Fprintf(os.Stderr, "Starting GitHub MCP Server (version %s, read-only: %v)\n", Version, readOnly)
 
 	if err := s.Serve(ctx); err != nil {
 		return fmt.Errorf("server error: %w", err)
