@@ -52,11 +52,10 @@ and more.`,
 	}
 
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
-	// Default to GitHub Enterprise host for my work setup; override with --host for github.com
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
-	// Default read-only to true to avoid accidental mutations when experimenting
-	cmd.Flags().BoolVar(&readOnly, "read-only", true, "Restrict server to read-only operations")
+	// Default read-only to false so I can use all features without extra flags during local dev
+	cmd.Flags().BoolVar(&readOnly, "read-only", false, "Restrict server to read-only operations")
 
 	return cmd
 }
