@@ -40,6 +40,8 @@ func NewClient(ctx context.Context, opts ClientOptions) (*github.Client, error) 
 	if opts.BaseURL != "" {
 		uploadURL := opts.UploadURL
 		if uploadURL == "" {
+			// Fall back to BaseURL for upload endpoint when not explicitly set.
+			// This is the standard behaviour for GHE instances.
 			uploadURL = opts.BaseURL
 		}
 		client, err = github.NewEnterpriseClient(opts.BaseURL, uploadURL, httpClient)
@@ -69,6 +71,16 @@ func IsRateLimited(err error) bool {
 	}
 	_, ok := err.(*github.RateLimitError)
 	return ok
+}
+
+// IsUnauthorized returns true if the error is a GitHub 401 Unauthorized error.
+// Useful for detecting expired or revoked tokens early.
+func IsUnauthorized(err error) bool {
+	if err == nil {
+		return false
+	}
+	errResp, ok := err.(*github.ErrorResponse)
+	return ok && errResp.Response != nil && errResp.Response.StatusCode == http.StatusUnauthorized
 }
 
 // FormatRepositoryName returns a standardised "owner/repo" string.
