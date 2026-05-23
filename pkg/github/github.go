@@ -83,6 +83,16 @@ func IsUnauthorized(err error) bool {
 	return ok && errResp.Response != nil && errResp.Response.StatusCode == http.StatusUnauthorized
 }
 
+// IsForbidden returns true if the error is a GitHub 403 Forbidden error.
+// This can occur when a token lacks the required scopes for an operation.
+func IsForbidden(err error) bool {
+	if err == nil {
+		return false
+	}
+	errResp, ok := err.(*github.ErrorResponse)
+	return ok && errResp.Response != nil && errResp.Response.StatusCode == http.StatusForbidden
+}
+
 // FormatRepositoryName returns a standardised "owner/repo" string.
 func FormatRepositoryName(owner, repo string) string {
 	return fmt.Sprintf("%s/%s", owner, repo)
