@@ -52,10 +52,8 @@ and more.`,
 	}
 
 	cmd.Flags().StringVar(&token, "token", "", "GitHub personal access token (overrides GITHUB_TOKEN env var)")
-	// Default to GitHub Enterprise host for my work setup; override with --host for github.com
 	cmd.Flags().StringVar(&host, "host", "https://api.github.com", "GitHub API host URL")
 	cmd.Flags().StringVar(&logFile, "log-file", "", "Path to log file (defaults to stderr)")
-	// Defaulting to false so I don't have to pass --read-only=false every time during local dev.
 	cmd.Flags().BoolVar(&readOnly, "read-only", false, "Restrict server to read-only operations")
 
 	return cmd
@@ -63,14 +61,16 @@ and more.`,
 
 func runServer(ctx context.Context, token, host, logFile string, readOnly bool) error {
 	// Resolve token from flag or environment variable.
-	// Also check GH_TOKEN as an alternative (used by the GitHub CLI).
+	// Check multiple env var names for compatibility with different tooling:
+	//   GITHUB_TOKEN - standard GitHub Actions / most tooling
+	//   GH_TOKEN     - used by the GitHub CLI
+	//   GITHUB_PAT   - used by some older tooling conventions
 	if token == "" {
 		token = os.Getenv("GITHUB_TOKEN")
 	}
 	if token == "" {
 		token = os.Getenv("GH_TOKEN")
 	}
-	// Also support GITHUB_PAT as some tooling uses this convention.
 	if token == "" {
 		token = os.Getenv("GITHUB_PAT")
 	}
@@ -95,18 +95,3 @@ func runServer(ctx context.Context, token, host, logFile string, readOnly bool) 
 	}
 
 	fmt.Fprintf(os.Stderr, "Starting GitHub MCP Server (version %s, read-only: %v)\n", Version, readOnly)
-
-	// Log which token source was used to help with debugging auth issues.
-	switch {
-	case os.Getenv("GITHUB_TOKEN") != "":
-		fmt.Fprintf(os.Stderr, "Using token from GITHUB_TOKEN\n")
-	case os.Getenv("GH_TOKEN") != "":
-		fmt.Fprintf(os.Stderr, "Using token from GH_TOKEN\n")
-	case os.Getenv("GITHUB_PAT") != "":
-		fmt.Fprintf(os.Stderr, "Using token from GITHUB_PAT\n")
-	default:
-		fmt.Fprintf(os.Stderr, "Using token from --token flag\n")
-	}
-
-	return s.Run(ctx)
-}
